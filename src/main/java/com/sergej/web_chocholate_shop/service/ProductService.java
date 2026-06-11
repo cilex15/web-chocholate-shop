@@ -46,10 +46,12 @@ public class ProductService {
         return productRepository.findByCode(code).isPresent();
     }
 
-    public Product save(Product product) {
+    public Product create(Product product) {
 
         if (existsByCode(product.getCode())) {
-            throw new RuntimeException("Product code already exists!");
+            throw new RuntimeException(
+                    "Product code already exists!"
+            );
         }
 
         factoryService.findById(
@@ -57,11 +59,34 @@ public class ProductService {
         );
 
         if (product.getPrice().signum() < 0) {
-            throw new RuntimeException("Price cannot be negative!");
+            throw new RuntimeException(
+                    "Price cannot be negative!"
+            );
         }
 
         if (product.getStockQuantity() < 0) {
-            throw new RuntimeException("Stock quantity cannot be negative!");
+            throw new RuntimeException(
+                    "Stock quantity cannot be negative!"
+            );
+        }
+
+        return productRepository.save(product);
+    }
+
+    public Product update(Product product) {
+
+        findById(product.getId());
+
+        if (product.getPrice().signum() < 0) {
+            throw new RuntimeException(
+                    "Price cannot be negative!"
+            );
+        }
+
+        if (product.getStockQuantity() < 0) {
+            throw new RuntimeException(
+                    "Stock quantity cannot be negative!"
+            );
         }
 
         return productRepository.save(product);
