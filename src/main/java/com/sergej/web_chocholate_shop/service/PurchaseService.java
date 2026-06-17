@@ -219,11 +219,7 @@ public class PurchaseService {
 
         if (LocalDateTime.now().isAfter(
 
-                purchase
-                        .getPurchaseDateTime()
-                        .plusHours(1)
-
-        )) {
+                purchase.getPurchaseDateTime().plusHours(1))) {
 
             throw new RuntimeException(
                     "Cancellation period expired!"

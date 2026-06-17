@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Login</title>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h1>Login</h1>
+
+<form th:action="@{/users/login}"
+      th:object="${loginDTO}"
+      method="post">
+
+    <div>
+
+        <label>Username:</label>
+
+        <input type="text"
+               th:field="*{username}">
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Password:</label>
+
+        <input type="password"
+               th:field="*{password}">
+
+    </div>
+
+    <br>
+
+    <button type="submit">
+
+        Login
+
+    </button>
+
+</form>
+
+<br>
+
+<a th:href="@{/users/register}">
+
+    Don't have an account?
+    Register here.
+
+</a>
+
+</body>
+
+</html>

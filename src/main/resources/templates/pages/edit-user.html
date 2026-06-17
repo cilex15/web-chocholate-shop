@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Edit User</title>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h1>Edit User</h1>
+
+<form th:action="@{/users/edit}"
+      th:object="${user}"
+      method="post">
+
+    <input type="hidden"
+           th:field="*{id}">
+
+    <input type="hidden"
+           th:field="*{registrationDateTime}">
+
+    <input type="hidden"
+           th:field="*{role}">
+
+    <div>
+
+        <label>Username:</label>
+
+        <input type="text"
+               th:field="*{username}">
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Password:</label>
+
+        <input type="password"
+               th:field="*{password}">
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Email:</label>
+
+        <input type="email"
+               th:field="*{email}">
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>First Name:</label>
+
+        <input type="text"
+               th:field="*{firstName}">
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Last Name:</label>
+
+        <input type="text"
+               th:field="*{lastName}">
+
+    </div>
+
+    <br>
+
+    <div>
+
+        <label>Birth Date:</label>
+
+        <input type="date"
+               th:field="*{birthDate}">
+
+    </div>
+
+    <br>
+
+    <button type="submit">
+
+        Save Changes
+
+    </button>
+
+</form>
+
+</body>
+
+</html>

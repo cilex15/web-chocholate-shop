@@ -1,5 +1,6 @@
 package com.sergej.web_chocholate_shop.service;
 
+import com.sergej.web_chocholate_shop.dto.LoginDTO;
 import com.sergej.web_chocholate_shop.model.enums.Role;
 import org.springframework.stereotype.Service;
 import com.sergej.web_chocholate_shop.model.entity.User;
@@ -47,7 +48,7 @@ public class UserService {
         return userRepository.findByUsername(username).isPresent();
     }
 
-    public User save(User user) {
+    public User create(User user) {
 
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new RuntimeException("Username already exists!");
@@ -64,11 +65,42 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User update(User user) {
+
+        findById(user.getId());
+
+        if (user.getRole() == null) {
+            user.setRole(Role.CUSTOMER);
+        }
+
+        return userRepository.save(user);
+    }
+
     public void deleteById(Long id) {
 
         findById(id);
 
         userRepository.deleteById(id);
+    }
+
+    public User authenticate(
+            LoginDTO loginDTO) {
+
+        User user =
+                findByUsername(
+                        loginDTO.getUsername()
+                );
+
+        if (!user.getPassword().equals(
+                loginDTO.getPassword()
+        )) {
+
+            throw new RuntimeException(
+                    "Invalid username or password!"
+            );
+        }
+
+        return user;
     }
 
 }

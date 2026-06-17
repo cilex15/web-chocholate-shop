@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Users</title>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h2 th:if="${loggedUser != null}">
+
+    Welcome,
+
+    <span th:text="${loggedUser.username}">
+    </span>
+
+</h2>
+
+<h1>Users</h1>
+
+<a th:href="@{/users/register}">
+    Register new user
+</a>
+
+<br>
+<br>
+
+<table border="1">
+
+    <thead>
+
+    <tr>
+
+        <th>ID</th>
+
+        <th>Username</th>
+
+        <th>Email</th>
+
+        <th>First Name</th>
+
+        <th>Last Name</th>
+
+        <th>Birth Date</th>
+
+        <th>Role</th>
+
+        <th>Actions</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="user : ${users}">
+
+        <td th:text="${user.id}"></td>
+
+        <td th:text="${user.username}"></td>
+
+        <td th:text="${user.email}"></td>
+
+        <td th:text="${user.firstName}"></td>
+
+        <td th:text="${user.lastName}"></td>
+
+        <td th:text="${user.birthDate}"></td>
+
+        <td th:text="${user.role}"></td>
+
+        <td>
+
+            <a th:href="@{'/users/edit/' + ${user.id}}">
+                Edit
+            </a>
+
+            |
+
+            <a th:href="@{'/users/delete/' + ${user.id}}">
+                Delete
+            </a>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+<br>
+
+<a th:href="@{/users/logout}">
+    Logout
+</a>
+
+</body>
+
+</html>
