@@ -38,11 +38,18 @@ public class FactoryService {
         return factoryRepository.findByPib(pib).isPresent();
     }
 
-    public Factory save(Factory factory) {
+    public Factory create(Factory factory) {
 
         if (existsByPib(factory.getPib())) {
             throw new RuntimeException("PIB already exists!");
         }
+
+        return factoryRepository.save(factory);
+    }
+
+    public Factory update(Factory factory) {
+
+        findById(factory.getId());
 
         return factoryRepository.save(factory);
     }
@@ -53,4 +60,6 @@ public class FactoryService {
 
         factoryRepository.deleteById(id);
     }
+
+
 }

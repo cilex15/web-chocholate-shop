@@ -1,5 +1,6 @@
 package com.sergej.web_chocholate_shop.service;
 
+import com.sergej.web_chocholate_shop.model.entity.Factory;
 import com.sergej.web_chocholate_shop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import com.sergej.web_chocholate_shop.model.entity.Product;
@@ -48,15 +49,23 @@ public class ProductService {
 
     public Product create(Product product) {
 
+        Factory factory = factoryService.findById(
+                product.getFactory().getId());
+
+        product.setFactory(factory);
+
         if (existsByCode(product.getCode())) {
             throw new RuntimeException(
                     "Product code already exists!"
             );
         }
 
-        factoryService.findById(
-                product.getFactory().getId()
-        );
+        if (product.getFactory() == null) {
+
+            throw new RuntimeException(
+                    "Factory must be selected!"
+            );
+        }
 
         if (product.getPrice().signum() < 0) {
             throw new RuntimeException(
@@ -76,6 +85,11 @@ public class ProductService {
     public Product update(Product product) {
 
         findById(product.getId());
+
+        Factory factory = factoryService.findById(
+                        product.getFactory().getId());
+
+        product.setFactory(factory);
 
         if (product.getPrice().signum() < 0) {
             throw new RuntimeException(
