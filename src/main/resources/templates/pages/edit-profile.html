@@ -12,9 +12,9 @@
 
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-<h1>Edit User</h1>
+<h1>Edit Profile</h1>
 
-<form th:action="@{/users/edit}"
+<form th:action="@{/profile/edit}"
       th:object="${user}"
       method="post">
 
@@ -25,7 +25,7 @@
            th:field="*{registrationDateTime}">
 
     <input type="hidden"
-           th:field="*{password}">
+           th:field="*{role}">
 
     <div>
 
@@ -84,24 +84,25 @@
 
     <div>
 
-        <label>Role:</label>
+        <label>New Password:</label>
 
-        <select th:field="*{role}">
-
-            <option th:value="CUSTOMER">
-                Customer
-            </option>
-
-            <option th:value="ADMIN">
-                Administrator
-            </option>
-
-        </select>
+        <input type="password"
+               th:field="*{newPassword}">
 
     </div>
 
     <br>
 
+    <div>
+
+        <label>Confirm Password:</label>
+
+        <input type="password"
+               th:field="*{confirmPassword}">
+
+    </div>
+
+    <br>
 
     <button type="submit">
 

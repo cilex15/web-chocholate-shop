@@ -2,6 +2,7 @@ package com.sergej.web_chocholate_shop.model.entity;
 
 import jakarta.persistence.*;
 import com.sergej.web_chocholate_shop.model.enums.Role;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +21,12 @@ public class User {
 
     private String password;
 
+    @Transient
+    private String newPassword;
+
+    @Transient
+    private String confirmPassword;
+
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -27,6 +34,7 @@ public class User {
 
     private String lastName;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
     private LocalDateTime registrationDateTime;
@@ -115,5 +123,21 @@ public class User {
 
     public void setPurchases(List<Purchase> purchases) {
         this.purchases = purchases;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

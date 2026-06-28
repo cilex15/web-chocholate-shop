@@ -58,4 +58,9 @@ public class CartItemDTO {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public BigDecimal getTotalPrice() {
+
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
 }

@@ -51,11 +51,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user) {
+    public String registerUser(@ModelAttribute User user,
+                               @RequestParam String confirmPassword) {
+
+        if(!user.getPassword().equals(confirmPassword)) {
+
+            throw new RuntimeException("Passwords do not match!");
+        }
 
         userService.create(user);
 
-        return "redirect:/users";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/login")
@@ -79,7 +85,7 @@ public class UserController {
             session.setAttribute("loggedUser",
                     user);
 
-            return "redirect:/users";
+            return "redirect:/products";
 
         }
         catch (RuntimeException e) {

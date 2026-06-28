@@ -12,19 +12,191 @@
 
 <h1>Products</h1>
 
-<a th:href="@{/products/create}">
-    Create Product
-</a>
 
 <br><br>
 
-<table border="1">
+<form th:action="@{/products}" method="get">
+
+    <div style="display:flex; gap:15px; flex-wrap:wrap; align-items:end;">
+
+        <div>
+
+            <label>Code</label><br>
+
+            <input type="text"
+                   name="code"
+                   th:value="${code}">
+
+        </div>
+
+        <div>
+
+            <label>Name</label><br>
+
+            <input type="text"
+                   name="name"
+                   th:value="${name}">
+
+        </div>
+
+        <div>
+
+            <label>Factory</label><br>
+
+            <select name="factoryId">
+
+                <option value="">
+                    All
+                </option>
+
+                <option
+                        th:each="factory : ${factories}"
+                        th:value="${factory.id}"
+                        th:text="${factory.name}"
+                        th:selected="${factory.id == factoryId}">
+                </option>
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <label>Min Stock</label><br>
+
+            <input type="number"
+                   name="minStock"
+                   th:value="${minStock}">
+
+        </div>
+
+        <div>
+
+            <label>Min Stock</label><br>
+
+            <input type="number"
+                   name="maxStock"
+                   th:value="${maxStock}">
+
+        </div>
+
+        <div>
+
+            <label>Min Price</label><br>
+
+            <input type="number"
+                   name="minPrice"
+                   th:value="${minPrice}">
+
+        </div>
+
+        <div>
+
+            <label>Max Price</label><br>
+
+            <input type="number"
+                   name="maxPrice"
+                   th:value="${maxPrice}">
+
+        </div>
+
+        <div>
+
+            <label>Sort By</label><br>
+
+            <select name="sortBy">
+
+                <option value="">None</option>
+
+                <option value="code"
+                        th:selected="${sortBy == 'code'}">Code</option>
+
+                <option value="name"
+                        th:selected="${sortBy == 'name'}">Name</option>
+
+                <option value="stockQuantity"
+                        th:selected="${sortBy == 'stockQuantity'}">Stock</option>
+
+                <option value="price"
+                        th:selected="${sortBy == 'price'}">Price</option>
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <label>Direction</label><br>
+
+            <select name="direction">
+
+                <option value="asc"
+                        th:selected="${direction == 'asc'}">
+                    Ascending
+                </option>
+
+                <option value="desc"
+                        th:selected="${direction == 'desc'}">
+                    Descending
+                </option>
+
+            </select>
+
+        </div>
+
+        <div>
+
+            <button type="submit">
+
+                Search
+
+            </button>
+
+        </div>
+
+        <div>
+
+            <a th:href="@{/products}">
+
+                Clear
+
+            </a>
+
+        </div>
+
+    </div>
+
+</form>
+
+<br><br>
+
+<a th:href="@{/products/create}"
+   th:if="${session.loggedUser != null && session.loggedUser.role.name() == 'ADMIN'}">
+    Create Product
+</a>
+
+
+<br><br>
+
+<div th:if="${#lists.isEmpty(products)}">
+
+    <h3>No products found.</h3>
+
+    <p>
+
+        There are no products matching the selected filters.
+
+    </p>
+
+</div>
+
+<table border="1" th:unless="${#lists.isEmpty(products)}">
 
     <thead>
 
     <tr>
 
-        <th>ID</th>
+        <th th:if="${session.loggedUser != null && session.loggedUser.role.name() == 'ADMIN'}">ID</th>
 
         <th>Name</th>
 
@@ -36,7 +208,15 @@
 
         <th>Factory</th>
 
-        <th>Actions</th>
+        <th>Discount</th>
+
+        <th>Current Price</th>
+
+        <th>Cart</th>
+
+        <th th:if="${session.loggedUser != null && session.loggedUser.role.name() == 'ADMIN'}">
+            Actions
+        </th>
 
     </tr>
 
@@ -44,9 +224,10 @@
 
     <tbody>
 
-    <tr th:each="product : ${products}">
+    <tr th:each="product : ${products}"
+        th:if="${session.loggedUser != null && session.loggedUser.role.name() == 'ADMIN'} or ${product.stockQuantity > 0}">
 
-        <td th:text="${product.id}"></td>
+        <td th:text="${product.id}" th:if="${session.loggedUser != null && session.loggedUser.role.name() == 'ADMIN'}"></td>
 
         <td th:text="${product.name}"></td>
 
@@ -59,6 +240,39 @@
         <td th:text="${product.factory.name}"></td>
 
         <td>
+
+            <span th:if="${product.discount != null}"
+                  th:text="${product.discount.discountPercent + '%'}">
+            </span>
+
+
+
+        </td>
+
+        <td th:text="${productService.calculateCurrentPrice(product)}"></td>
+
+        <td>
+
+            <form th:action="@{'/cart/add/' + ${product.id}}"
+                  method="post">
+
+                <input type="number"
+                       name="quantity"
+                       value="0"
+                       min="0"
+                       th:max="${product.stockQuantity}">
+
+                <button type="submit">
+
+                    Add To Cart
+
+                </button>
+
+            </form>
+
+        </td>
+
+        <td th:if="${session.loggedUser != null && session.loggedUser.role.name() == 'ADMIN'}">
 
             <a th:href="@{'/products/edit/' + ${product.id}}">
                 Edit

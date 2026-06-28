@@ -3,6 +3,7 @@ package com.sergej.web_chocholate_shop.service;
 import com.sergej.web_chocholate_shop.model.entity.Discount;
 import com.sergej.web_chocholate_shop.model.entity.Product;
 import com.sergej.web_chocholate_shop.repository.DiscountRepository;
+import com.sergej.web_chocholate_shop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,11 +14,13 @@ import java.util.List;
 public class DiscountService {
 
     private final DiscountRepository discountRepository;
+    private final ProductService productService;
 
     public DiscountService(
-            DiscountRepository discountRepository) {
+            DiscountRepository discountRepository, ProductService productService) {
 
         this.discountRepository = discountRepository;
+        this.productService = productService;
     }
 
     public List<Discount> findAll() {
@@ -31,24 +34,58 @@ public class DiscountService {
                         new RuntimeException("Discount not found!"));
     }
 
-    public Discount save(Discount discount) {
+    private void validateDiscount(Discount discount) {
 
         if (discount.getDiscountPercent() < 0
                 || discount.getDiscountPercent() > 100) {
 
             throw new RuntimeException(
-                    "Discount must be between 0 and 100!"
-            );
+                    "Discount must be between 0 and 100!");
         }
+
+        if (discount.getEndDateTime().isBefore(
+                        discount.getStartDateTime())) {
+
+            throw new RuntimeException(
+                    "End date must be after start date!");
+        }
+
+    }
+
+    public Discount create(Discount discount) {
+
+        Product product = productService.findById(discount.getProduct().getId());
+
+        discount.setProduct(product);
+
+        validateDiscount(discount);
+
+        return discountRepository.save(discount);
+    }
+
+    public Discount update(Discount discount) {
+
+        findById(discount.getId());
+
+        validateDiscount(discount);
 
         return discountRepository.save(discount);
     }
 
     public void deleteById(Long id) {
 
-        findById(id);
+        Discount discount = findById(id);
 
-        discountRepository.deleteById(id);
+        Product product = discount.getProduct();
+
+        if(product != null) {
+
+            product.setDiscount(null);
+
+            productService.update(product);
+        }
+
+        discountRepository.delete(discount);
     }
 
     public boolean isDiscountActive(Discount discount) {

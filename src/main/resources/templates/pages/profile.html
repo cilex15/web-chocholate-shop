@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Profile</title>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h1>My Profile</h1>
+
+<p>
+    Username:
+    <span th:text="${user.username}"></span>
+</p>
+
+<p>
+    Email:
+    <span th:text="${user.email}"></span>
+</p>
+
+<p>
+    First Name:
+    <span th:text="${user.firstName}"></span>
+</p>
+
+<p>
+    Last Name:
+    <span th:text="${user.lastName}"></span>
+</p>
+
+<p>
+    Birth Date:
+    <span th:text="${user.birthDate}"></span>
+</p>
+
+<br>
+
+<a th:href="@{profile/edit}">
+    Edit Profile
+</a>
+
+<br><br>
+
+<h1>Purchase History</h1>
+
+<div th:if="${#lists.isEmpty(purchases)}">
+
+    <h3>No purchases yet</h3>
+
+    <p>
+        You haven't made any purchases yet.
+    </p>
+
+    <a th:href="@{/products}">
+        Browse Products
+    </a>
+
+</div>
+
+<h2 th:unless="${purchases.isEmpty()}">Filter Purchases</h2>
+
+<form   th:unless="${purchases.isEmpty()}"
+        th:action="@{/profile}" method="get">
+
+    <label>From:</label>
+
+    <input type="date"
+           name="from"
+           th:value="${from}">
+
+    <label>To:</label>
+
+    <input type="date"
+           name="to"
+           th:value="${to}">
+
+    <button type="submit">
+
+        Filter
+
+    </button>
+
+    <a th:href="@{/profile}">
+
+        Clear
+
+    </a>
+
+</form>
+
+<br>
+
+<table border="1" th:unless="${purchases.isEmpty()}">
+
+    <thead>
+
+    <tr>
+
+        <th>Products</th>
+
+        <th>Total Price</th>
+
+        <th>Purchase Date</th>
+
+        <th>Status</th>
+
+        <th>Action</th>
+
+        <th>Cancelled At</th>
+
+        <th>Cancellation reason</th>
+
+        <th>Details</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="purchase : ${purchases}">
+
+        <td>
+
+            <ul>
+
+                <li th:each="item : ${purchase.items}">
+
+                    <span th:text="${item.product.name}"></span>
+
+                    -
+
+                    Quantity:
+
+                    <span th:text="${item.quantity}"></span>
+
+                </li>
+
+            </ul>
+
+        </td>
+
+        <td th:text="${purchase.totalPrice + ' €'}"></td>
+
+        <td th:text="${#temporals.format(purchase.purchaseDateTime, 'dd.MM.yyyy; HH:mm')}"></td>
+
+        <td>
+
+            <span th:if="${purchase.status.name() == 'PURCHASED'}">
+                Purchased
+            </span>
+
+            <span th:if="${purchase.status.name() == 'CANCELLED'}">
+                 Cancelled
+            </span>
+
+        </td>
+
+        <td>
+
+            <a th:if="${purchase.status.name() == 'PURCHASED'}"
+               th:href="@{'/purchases/cancel/' + ${purchase.id}}">
+
+                Cancel Purchase
+
+            </a>
+
+            <span th:if="${purchase.status.name() == 'CANCELLED'}">
+
+                Cancelled
+
+            </span>
+
+        </td>
+
+        <td>
+
+            <span th:if="${purchase.cancelledAt != null}"
+                th:text="${#temporals.format(purchase.cancelledAt, 'dd.MM.yyyy; HH:mm')}">
+            </span>
+
+                    <span th:if="${purchase.cancelledAt == null}">
+                -
+            </span>
+
+        </td>
+
+        <td>
+
+            <span th:if="${purchase.cancellationReason != null}"
+                th:text="${purchase.cancellationReason}">
+            </span>
+
+            <span th:if="${purchase.cancellationReason == null}">
+                -
+            </span>
+
+        </td>
+
+        <td>
+
+            <a th:href="@{'/purchases/' + ${purchase.id}}">
+
+                View
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+<br>
+
+</body>
+
+</html>

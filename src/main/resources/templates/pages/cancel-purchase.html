@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Cancel Purchase</title>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h1>Cancel Purchase</h1>
+
+<hr>
+
+<h3>Purchase Information</h3>
+
+<p>
+    <strong>Purchase ID:</strong>
+    <span th:text="${purchase.id}"></span>
+</p>
+
+<p>
+    <strong>Purchase Date:</strong>
+    <span th:text="${#temporals.format(purchase.purchaseDateTime, 'dd.MM.yyyy; HH:mm')}"></span>
+</p>
+
+<p>
+    <strong>Total Price:</strong>
+    <span th:text="${purchase.totalPrice + ' €'}"></span>
+</p>
+
+<p>
+    <strong>Status:</strong>
+    <span th:text="${purchase.status}"></span>
+</p>
+
+<hr>
+
+<h3>Products</h3>
+
+<table border="1">
+
+    <thead>
+
+    <tr>
+
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="item : ${purchase.items}">
+
+        <td th:text="${item.product.name}"></td>
+
+        <td th:text="${item.quantity}"></td>
+
+        <td th:text="${item.priceAtPurchase + ' €'}"></td>
+
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+<br>
+
+<form th:action="@{'/purchases/cancel/' + ${purchase.id}}"
+      method="post">
+
+    <label for="reason">
+        <strong>Reason for cancellation</strong>
+    </label>
+
+    <br><br>
+
+    <textarea
+            id="reason"
+            name="reason"
+            rows="6"
+            cols="70"
+            placeholder="Please enter the reason for cancelling this purchase..."
+            required>
+    </textarea>
+
+    <br><br>
+
+    <button type="submit">
+        Confirm Cancellation
+    </button>
+
+    <a th:href="@{/profile}">
+        Back
+    </a>
+
+</form>
+
+</body>
+
+</html>
+

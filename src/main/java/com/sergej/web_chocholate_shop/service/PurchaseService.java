@@ -11,6 +11,7 @@ import com.sergej.web_chocholate_shop.repository.PurchaseRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,8 @@ public class PurchaseService {
     public PurchaseService(
             PurchaseRepository purchaseRepository,
             ProductService productService,
-            DiscountService discountService, PurchaseItemRepository purchaseItemRepository) {
+            DiscountService discountService,
+            PurchaseItemRepository purchaseItemRepository) {
 
         this.purchaseRepository = purchaseRepository;
         this.productService = productService;
@@ -226,6 +228,13 @@ public class PurchaseService {
             );
         }
 
+        if (reason == null ||  reason.isBlank()) {
+
+            throw new RuntimeException(
+                    "Reason is required!"
+            );
+        }
+
         purchase.setStatus(
                 PurchaseStatus.CANCELLED
         );
@@ -265,6 +274,28 @@ public class PurchaseService {
                     product
             );
         }
+
+
+    }
+
+    public List<Purchase> findByUser(User user) {
+
+        return purchaseRepository.findByUser(user);
+    }
+
+    public List<Purchase> findByUserBetweenDates(
+            User user,
+            LocalDate from,
+            LocalDate to) {
+
+        LocalDateTime start = from.atStartOfDay();
+
+        LocalDateTime end = to.atTime(23, 59, 59);
+
+        return purchaseRepository.findByUserAndPurchaseDateTimeBetween(
+                        user,
+                        start,
+                        end);
     }
 
 }

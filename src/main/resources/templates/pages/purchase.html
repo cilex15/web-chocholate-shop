@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Purchase Details</title>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h1>Purchase Details</h1>
+
+<hr>
+
+<p>
+
+    <strong>Purchase ID:</strong>
+
+    <span th:text="${purchase.id}"></span>
+
+</p>
+
+<p>
+
+    <strong>Purchase Date:</strong>
+
+    <span
+            th:text="${#temporals.format(purchase.purchaseDateTime,
+            'dd.MM.yyyy; HH:mm')}">
+    </span>
+
+</p>
+
+<p>
+
+    <strong>Status:</strong>
+
+    <span th:text="${purchase.status}"></span>
+
+</p>
+
+<p>
+
+    <strong>Total Price:</strong>
+
+    <span th:text="${purchase.totalPrice + ' €'}"></span>
+
+</p>
+
+<hr>
+
+<h2>Purchased Products</h2>
+
+<table border="1">
+
+    <thead>
+
+    <tr>
+
+        <th>Product</th>
+
+        <th>Quantity</th>
+
+        <th>Price</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="item : ${purchase.items}">
+
+        <td th:text="${item.product.name}"></td>
+
+        <td th:text="${item.quantity}"></td>
+
+        <td th:text="${item.priceAtPurchase + ' €'}"></td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+<br>
+
+<a th:href="@{/profile}">
+
+    Back to Profile
+
+</a>
+
+</body>
+
+</html>

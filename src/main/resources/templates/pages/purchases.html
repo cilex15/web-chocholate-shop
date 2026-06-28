@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Admin - Purchase Management</title>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<h1>Purchase Management</h1>
+
+<p>
+    Kompletan pregled svih kupovina odradjenih u sistemu
+</p>
+
+<table border="1">
+
+    <thead>
+
+    <tr>
+
+        <th>Purchase ID</th>
+
+        <th>Customer</th>
+
+        <th>Email</th>
+
+        <th>Products</th>
+
+        <th>Total Price</th>
+
+        <th>Purchase Date</th>
+
+        <th>Status</th>
+
+        <th>Action</th>
+
+        <th>Cancelled At</th>
+
+        <th>Cancellation Reason</th>
+
+    </tr>
+
+    </thead>
+
+    <tbody>
+
+    <tr th:each="purchase : ${purchases}">
+
+        <td th:text="${purchase.id}"></td>
+
+        <td th:text="${purchase.user.username}"></td>
+
+        <td th:text="${purchase.user.email}"></td>
+
+        <td>
+
+            <ul>
+
+                <li th:each="item : ${purchase.items}">
+
+                    <span th:text="${item.product.name}"></span>
+
+                    -
+
+                    Quantity:
+
+                    <span th:text="${item.quantity}"></span>
+
+                </li>
+
+            </ul>
+
+        </td>
+
+        <td th:text="${purchase.totalPrice + ' €'}"></td>
+
+        <td th:text="${#temporals.format(purchase.purchaseDateTime, 'dd.MM.yyyy; HH:mm')}"></td>
+
+        <td>
+
+            <span th:if="${purchase.status.name() == 'PURCHASED'}">
+                Purchased
+            </span>
+
+            <span th:if="${purchase.status.name() == 'CANCELLED'}">
+                Cancelled
+            </span>
+
+        </td>
+
+        <td>
+
+            <a th:if="${purchase.status.name() == 'PURCHASED'}"
+               th:href="@{'/purchases/cancel/' + ${purchase.id}}">
+
+                Cancel Purchase
+
+            </a>
+
+            <span th:if="${purchase.status.name() == 'CANCELLED'}">
+
+                Cancelled
+
+            </span>
+
+        </td>
+
+        <td>
+
+            <span th:if="${purchase.cancelledAt != null}"
+                th:text="${#temporals.format(purchase.cancelledAt, 'dd.MM.yyyy; HH:mm')}">
+            </span>
+
+            <span th:if="${purchase.cancelledAt == null}">
+                -
+            </span>
+
+        </td>
+
+        <td>
+
+            <span th:if="${purchase.cancellationReason != null}"
+                th:text="${purchase.cancellationReason}">
+            </span>
+
+            <span th:if="${purchase.cancellationReason == null}">
+                -
+            </span>
+
+        </td>
+
+    </tr>
+
+    </tbody>
+
+</table>
+
+</body>
+
+</html>
