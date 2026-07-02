@@ -3,6 +3,8 @@ package com.sergej.web_chocholate_shop.service;
 import com.sergej.web_chocholate_shop.model.entity.Discount;
 import com.sergej.web_chocholate_shop.model.entity.Factory;
 import com.sergej.web_chocholate_shop.repository.ProductRepository;
+import com.sergej.web_chocholate_shop.repository.PurchaseItemRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.sergej.web_chocholate_shop.model.entity.Product;
@@ -15,13 +17,18 @@ import java.util.List;
 @Service
 public class ProductService {
 
+    private static final int FEATURED_PRODUCTS_LIMIT = 4;
+
     private final ProductRepository productRepository;
 
     private final FactoryService factoryService;
 
-    public ProductService(ProductRepository productRepository, FactoryService factoryService) {
+    private final PurchaseItemRepository purchaseItemRepository;
+
+    public ProductService(ProductRepository productRepository, FactoryService factoryService, PurchaseItemRepository purchaseItemRepository) {
         this.productRepository = productRepository;
         this.factoryService = factoryService;
+        this.purchaseItemRepository = purchaseItemRepository;
     }
 
     public List<Product> findAll() {
@@ -216,7 +223,29 @@ public class ProductService {
                 sort);
     }
 
+    public List<Product> getFeaturedProducts() {
 
+        List<Product> discounted =
+                productRepository.findDiscountedProducts(
+                        LocalDateTime.now());
+
+        if(!discounted.isEmpty()) {
+
+            return discounted.stream()
+                    .limit(FEATURED_PRODUCTS_LIMIT)
+                    .toList();
+        }
+
+        return purchaseItemRepository
+                .findBestSellingProducts(
+                        PageRequest.of(0, FEATURED_PRODUCTS_LIMIT));
+    }
+
+    public boolean hasActiveDiscountedProducts() {
+
+        return !productRepository.findDiscountedProducts(
+                LocalDateTime.now()).isEmpty();
+    }
 
 
 

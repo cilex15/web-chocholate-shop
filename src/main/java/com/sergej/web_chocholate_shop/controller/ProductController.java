@@ -51,7 +51,9 @@ public class ProductController {
 
             @RequestParam(defaultValue = "asc") String direction,
 
-            Model model) {
+            Model model,
+
+            HttpSession session) {
 
         List<Product> products =
                 productService.searchProducts(
@@ -64,6 +66,47 @@ public class ProductController {
                         maxPrice,
                         sortBy,
                         direction);
+
+        List<Product> featuredProducts =
+                productService.getFeaturedProducts();
+
+        boolean hasActiveDiscountedProducts =
+                productService.hasActiveDiscountedProducts();
+
+        model.addAttribute(
+                "featuredProducts",
+                featuredProducts);
+
+        model.addAttribute(
+                "featuredTitle",
+                hasActiveDiscountedProducts
+                        ? "Aktuelne akcije"
+                        : "Najprodavaniji proizvodi");
+
+        model.addAttribute(
+                "featuredSubtitle",
+                hasActiveDiscountedProducts
+                        ? "Proizvodi koji su trenutno na popustu"
+                        : "Proizvodi koje kupci najcesce biraju");
+
+        User loggedUser = (User) session.getAttribute("loggedUser");
+
+        boolean noSearchApplied =
+                (code == null || code.isBlank())
+                        && (name == null || name.isBlank())
+                        && factoryId == null
+                        && minStock == null
+                        && maxStock == null
+                        && minPrice == null
+                        && maxPrice == null;
+
+        boolean customerOrGuest =
+                loggedUser == null
+                        || loggedUser.getRole() == Role.CUSTOMER;
+
+        model.addAttribute(
+                "showFeatured",
+                noSearchApplied && customerOrGuest);
 
         model.addAttribute("products", products);
 

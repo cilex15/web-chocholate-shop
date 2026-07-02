@@ -1,0 +1,328 @@
+body{
+
+    background:#1d2436;
+
+    color:white;
+
+    font-family:'Segoe UI',sans-serif;
+
+}
+
+.custom-navbar{
+
+    background:#151d31;
+
+    border-bottom:1px solid #2c354f;
+
+    padding:15px 30px;
+
+}
+
+.custom-navbar a{
+
+    color:white;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+}
+
+.custom-navbar a:hover{
+
+    color:#5cb6ff;
+
+}
+
+.navbar-brand{
+
+    font-size:26px;
+
+    font-weight:700;
+
+}
+
+.logout-btn{
+
+    border:1px solid #495066;
+
+    border-radius:30px;
+
+    padding:10px 22px;
+
+    transition:.25s;
+
+}
+
+.logout-btn:hover{
+
+    background:#3b82f6;
+
+    color:white;
+
+}
+
+.dropdown-menu{
+
+    background:#2b3247;
+
+    border:1px solid #3a4461;
+
+    border-radius:12px;
+
+    padding:8px;
+
+}
+
+.dropdown-item{
+
+    color:white;
+
+    border-radius:8px;
+
+    transition:.2s;
+
+}
+
+.dropdown-item:hover{
+
+    background:#3b82f6;
+
+    color:white;
+
+}
+
+.dropdown-item:active{
+
+    background:#2563eb;
+
+}
+
+.nav-link{
+
+    color:white !important;
+
+}
+
+.nav-link:hover{
+
+    color:#5cb6ff !important;
+
+}
+
+.dropdown-toggle{
+
+    font-weight:600;
+
+}
+
+table {
+
+
+
+    border-collapse: collapse;
+
+    margin-top: 20px;
+
+}
+
+table th,
+table td {
+
+    border: 3px solid #495066;
+
+    padding: 12px;
+
+}
+
+table th {
+
+    background: #2b3247;
+
+    color: white;
+
+    font-weight: 600;
+
+}
+
+table td {
+
+    background: #1f273d;
+
+    color: white;
+
+}
+
+.description-column{
+
+    min-width: 150px;
+
+    max-width: 200px;
+
+    white-space: normal;
+
+    word-break: break-word;
+
+    vertical-align: top;
+
+    line-height: 1.5;
+
+    padding: 12px;
+
+    min-height: 60px;
+
+}
+
+.name-column{
+
+    width: 170px;
+
+    min-width: 150px;
+
+    max-width: 150px;
+
+}
+
+.old-price{
+
+    text-decoration: line-through;
+
+    color: #9ca3af;
+
+}
+
+.featured-section{
+
+    margin:30px 0;
+
+    padding:24px;
+
+    background:#202941;
+
+    border:1px solid #34405f;
+
+    border-radius:8px;
+
+}
+
+.featured-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    align-items:end;
+
+    margin-bottom:18px;
+
+}
+
+.featured-header h2{
+
+    margin:0;
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+.featured-header p{
+
+    margin:0;
+
+    color:#b7c2d8;
+
+}
+
+.featured-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:16px;
+
+}
+
+.featured-card{
+
+    background:#1f273d;
+
+    border:1px solid #495066;
+
+    border-radius:8px;
+
+    padding:18px;
+
+}
+
+.featured-card-top{
+
+    min-height:28px;
+
+    margin-bottom:12px;
+
+}
+
+.featured-badge{
+
+    display:inline-block;
+
+    background:#3b82f6;
+
+    color:white;
+
+    border-radius:999px;
+
+    padding:5px 10px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+.secondary-badge{
+
+    background:#495066;
+
+}
+
+.featured-card h3{
+
+    margin:0 0 8px;
+
+    font-size:20px;
+
+    font-weight:700;
+
+}
+
+.featured-factory{
+
+    color:#b7c2d8;
+
+    margin-bottom:16px;
+
+}
+
+.featured-prices{
+
+    display:flex;
+
+    align-items:baseline;
+
+    gap:10px;
+
+}
+
+.featured-prices strong{
+
+    font-size:22px;
+
+    color:#ffffff;
+
+}

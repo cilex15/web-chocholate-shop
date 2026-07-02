@@ -1,5 +1,6 @@
 package com.sergej.web_chocholate_shop.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.sergej.web_chocholate_shop.model.entity.Product;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,5 +50,12 @@ AND
             @Param("sort") Sort sort
     );
 
-
+    @Query("""
+SELECT p
+FROM Product p
+WHERE p.discount IS NOT NULL
+AND p.discount.startDateTime <= :now
+AND p.discount.endDateTime >= :now
+""")
+    List<Product> findDiscountedProducts(@Param("now") LocalDateTime now);
 }
