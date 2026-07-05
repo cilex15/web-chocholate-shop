@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.sergej.web_chocholate_shop.model.entity.Product;
+import com.sergej.web_chocholate_shop.model.entity.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,6 +20,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByCode(String code);
 
     List<Product> findByNameContaining(String name);
+
+    List<Product> findByCustomProductOwner(User customProductOwner);
 
 
     @Query("""
@@ -38,6 +41,8 @@ AND
 (:minPrice IS NULL OR p.price >= :minPrice)
 AND
 (:maxPrice IS NULL OR p.price <= :maxPrice)
+AND
+p.customProductOwner IS NULL
 """)
     List<Product> searchProducts(
             @Param("code") String code,
@@ -56,6 +61,7 @@ FROM Product p
 WHERE p.discount IS NOT NULL
 AND p.discount.startDateTime <= :now
 AND p.discount.endDateTime >= :now
+AND p.customProductOwner IS NULL
 """)
     List<Product> findDiscountedProducts(@Param("now") LocalDateTime now);
 }

@@ -82,6 +82,14 @@ public class CartController {
         Product product =
                 productService.findById(id);
 
+        if (product.getCustomProductOwner() != null
+                && !product.getCustomProductOwner().getId()
+                .equals(loggedUser.getId())) {
+
+            throw new RuntimeException(
+                    "You don't have permission to buy this product.");
+        }
+
         if (quantity < 1) {
 
             throw new RuntimeException("Quantity must be greater than zero.");

@@ -326,3 +326,179 @@ table td {
     color:#ffffff;
 
 }
+
+.page-content{
+
+    padding:24px;
+
+}
+
+.request-product-cta{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin:14px 0 22px;
+
+    color:#d8e2f3;
+
+}
+
+.request-product-cta a{
+
+    color:#5cb6ff;
+
+    font-weight:700;
+
+    text-decoration:none;
+
+}
+
+.request-product-cta a:hover{
+
+    text-decoration:underline;
+
+}
+
+.customer-products-section{
+
+    margin:24px 0;
+
+    padding:22px;
+
+    background:#202941;
+
+    border:1px solid #34405f;
+
+    border-radius:8px;
+
+}
+
+.customer-products-section h2{
+
+    margin:0 0 18px;
+
+    font-size:26px;
+
+}
+
+.request-message{
+
+    margin:14px 0;
+
+    padding:14px;
+
+    background:#1f273d;
+
+    border:1px solid #495066;
+
+    border-radius:8px;
+
+    color:#d8e2f3;
+
+}
+
+.rejected-message{
+
+    border-color:#7f4b4b;
+
+}
+
+.comment-action-form,
+.inline-comment-form{
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:flex-start;
+
+    flex-wrap:wrap;
+
+    margin-top:12px;
+
+}
+
+.comment-action-form textarea,
+.inline-comment-form textarea{
+
+    min-width:260px;
+
+    max-width:520px;
+
+    width:100%;
+
+    background:#151d31;
+
+    color:white;
+
+    border:1px solid #495066;
+
+    border-radius:8px;
+
+    padding:10px;
+
+}
+
+.form-panel{
+
+    display:grid;
+
+    gap:10px;
+
+    max-width:620px;
+
+    margin-top:20px;
+
+}
+
+.form-panel input,
+.form-panel select,
+.form-panel textarea{
+
+    background:#151d31;
+
+    color:white;
+
+    border:1px solid #495066;
+
+    border-radius:8px;
+
+    padding:10px;
+
+}
+
+.form-panel button,
+.comment-action-form button,
+.inline-comment-form button{
+
+    background:#3b82f6;
+
+    color:white;
+
+    border:0;
+
+    border-radius:8px;
+
+    padding:10px 16px;
+
+    font-weight:700;
+
+}
+
+.request-summary{
+
+    max-width:720px;
+
+    padding:16px;
+
+    background:#1f273d;
+
+    border:1px solid #495066;
+
+    border-radius:8px;
+
+}

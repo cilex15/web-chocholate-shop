@@ -29,6 +29,10 @@ public class Product {
     @JoinColumn(name = "factory_id")
     private Factory factory;
 
+    @ManyToOne
+    @JoinColumn(name = "custom_product_owner_id")
+    private User customProductOwner;
+
     @OneToOne(mappedBy = "product")
     private Discount discount;
 
@@ -89,6 +93,14 @@ public class Product {
 
     public void setFactory(Factory factory) {
         this.factory = factory;
+    }
+
+    public User getCustomProductOwner() {
+        return customProductOwner;
+    }
+
+    public void setCustomProductOwner(User customProductOwner) {
+        this.customProductOwner = customProductOwner;
     }
 
     public Discount getDiscount() {

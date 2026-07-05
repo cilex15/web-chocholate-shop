@@ -4,6 +4,7 @@ import com.sergej.web_chocholate_shop.model.entity.Product;
 import com.sergej.web_chocholate_shop.model.entity.User;
 import com.sergej.web_chocholate_shop.model.enums.Role;
 import com.sergej.web_chocholate_shop.service.FactoryService;
+import com.sergej.web_chocholate_shop.service.ProductRequestService;
 import com.sergej.web_chocholate_shop.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -21,12 +22,16 @@ public class ProductController {
 
     private final FactoryService factoryService;
 
+    private final ProductRequestService productRequestService;
+
     public ProductController(
             ProductService productService,
-            FactoryService factoryService) {
+            FactoryService factoryService,
+            ProductRequestService productRequestService) {
 
         this.productService = productService;
         this.factoryService = factoryService;
+        this.productRequestService = productRequestService;
     }
 
 
@@ -55,6 +60,8 @@ public class ProductController {
 
             HttpSession session) {
 
+        User loggedUser = (User) session.getAttribute("loggedUser");
+
         List<Product> products =
                 productService.searchProducts(
                         code,
@@ -80,16 +87,14 @@ public class ProductController {
         model.addAttribute(
                 "featuredTitle",
                 hasActiveDiscountedProducts
-                        ? "Aktuelne akcije"
-                        : "Najprodavaniji proizvodi");
+                        ? "Ongoing discounts"
+                        : "Most selling products");
 
         model.addAttribute(
                 "featuredSubtitle",
                 hasActiveDiscountedProducts
-                        ? "Proizvodi koji su trenutno na popustu"
-                        : "Proizvodi koje kupci najcesce biraju");
-
-        User loggedUser = (User) session.getAttribute("loggedUser");
+                        ? "Products that are currently discounted"
+                        : "Products that most customers buy");
 
         boolean noSearchApplied =
                 (code == null || code.isBlank())
@@ -109,6 +114,16 @@ public class ProductController {
                 noSearchApplied && customerOrGuest);
 
         model.addAttribute("products", products);
+
+        if (loggedUser != null
+                && loggedUser.getRole() == Role.CUSTOMER) {
+
+            model.addAttribute("customProducts",
+                    productService.findCustomProductsForUser(loggedUser));
+
+            model.addAttribute("productRequests",
+                    productRequestService.findByCustomer(loggedUser));
+        }
 
         model.addAttribute("productService", productService);
 

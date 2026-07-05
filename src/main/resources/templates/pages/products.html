@@ -70,6 +70,154 @@
 
 <h1>Products</h1>
 
+<div class="request-product-cta"
+     th:if="${loggedUser != null && loggedUser.role.name() == 'CUSTOMER'}">
+
+    <span>Want to create your own product?</span>
+
+    <a th:href="@{/product-requests/create}">
+        Request product
+    </a>
+
+</div>
+
+<section class="customer-products-section"
+         th:if="${loggedUser != null && loggedUser.role.name() == 'CUSTOMER' && productRequests != null && !#lists.isEmpty(productRequests)}">
+
+    <h2>Your products</h2>
+
+    <div th:each="request : ${productRequests}">
+
+        <div class="request-message"
+             th:if="${request.status.name() == 'PENDING'}">
+            Your product request is waiting for administrator review.
+        </div>
+
+        <div class="request-message"
+             th:if="${request.status.name() == 'REVISION_REQUESTED'}">
+            Your revision was sent to the administrator.
+        </div>
+
+        <div class="request-message"
+             th:if="${request.status.name() == 'OFFER_REJECTED'}">
+            You rejected this offer.
+        </div>
+
+        <div class="request-message rejected-message"
+             th:if="${request.status.name() == 'REJECTED'}">
+
+            <strong>Request rejected:</strong>
+
+            <span th:text="${request.adminRejectionComment}"></span>
+
+            <form th:action="@{'/product-requests/' + ${request.id} + '/revision'}"
+                  method="post"
+                  class="comment-action-form">
+
+                <textarea name="comment"
+                          rows="3"
+                          placeholder="Revision comment"
+                          required></textarea>
+
+                <button type="submit">
+                    Send Revision
+                </button>
+
+            </form>
+
+        </div>
+
+        <div th:if="${request.status.name() == 'APPROVED' && request.createdProduct != null}">
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Code</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Factory</th>
+                    <th>Cart</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr>
+
+                    <td th:text="${request.createdProduct.name}"></td>
+                    <td class="description-column"
+                        th:text="${request.createdProduct.description}"></td>
+                    <td th:text="${request.createdProduct.code}"></td>
+                    <td th:text="${request.createdProduct.price + ' €'}"></td>
+                    <td th:text="${request.createdProduct.stockQuantity}"></td>
+                    <td th:text="${request.createdProduct.factory.name}"></td>
+
+                    <td>
+
+                        <form th:action="@{'/cart/add/' + ${request.createdProduct.id}}"
+                              method="post">
+
+                            <input type="number"
+                                   name="quantity"
+                                   value="0"
+                                   min="0"
+                                   th:max="${request.createdProduct.stockQuantity}">
+
+                            <button type="submit">
+                                Add To Cart
+                            </button>
+
+                        </form>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+            <form th:action="@{'/product-requests/' + ${request.id} + '/revision'}"
+                  method="post"
+                  class="comment-action-form">
+
+                <textarea name="comment"
+                          rows="3"
+                          placeholder="Revision comment"
+                          required></textarea>
+
+                <button type="submit">
+                    Send Revision
+                </button>
+
+            </form>
+
+            <form th:action="@{'/product-requests/' + ${request.id} + '/reject-offer'}"
+                  method="post"
+                  class="comment-action-form">
+
+                <textarea name="comment"
+                          rows="3"
+                          placeholder="Offer rejection comment"
+                          required></textarea>
+
+                <button type="submit">
+                    Reject Offer
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
+
 
 <br><br>
 

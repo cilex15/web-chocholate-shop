@@ -2,6 +2,7 @@ package com.sergej.web_chocholate_shop.service;
 
 import com.sergej.web_chocholate_shop.model.entity.Discount;
 import com.sergej.web_chocholate_shop.model.entity.Factory;
+import com.sergej.web_chocholate_shop.model.entity.User;
 import com.sergej.web_chocholate_shop.repository.ProductRepository;
 import com.sergej.web_chocholate_shop.repository.PurchaseItemRepository;
 import org.springframework.data.domain.PageRequest;
@@ -33,6 +34,11 @@ public class ProductService {
 
     public List<Product> findAll() {
         return productRepository.findAll();
+    }
+
+    public List<Product> findCustomProductsForUser(User user) {
+
+        return productRepository.findByCustomProductOwner(user);
     }
 
     public Product findById(Long id) {
