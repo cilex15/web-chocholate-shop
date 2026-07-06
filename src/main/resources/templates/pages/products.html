@@ -141,6 +141,7 @@
                     <th>Stock</th>
                     <th>Factory</th>
                     <th>Cart</th>
+                    <th>Image</th>
                 </tr>
 
                 </thead>
@@ -174,6 +175,14 @@
 
                         </form>
 
+                    </td>
+
+                    <td>
+                        <img th:if="${request.createdProduct.imagePath != null && !request.createdProduct.imagePath.isBlank()}"
+                             th:src="@{${request.createdProduct.imagePath}}"
+                             th:alt="${request.createdProduct.name}"
+                             width="75"
+                             height="75">
                     </td>
 
                 </tr>
@@ -420,6 +429,8 @@
 
         <th>Cart</th>
 
+        <th>Image</th>
+
         <th th:if="${session.loggedUser != null && session.loggedUser.role.name() == 'ADMIN'}">
             Actions
         </th>
@@ -485,6 +496,14 @@
 
             </form>
 
+        </td>
+
+        <td>
+            <img th:if="${product.imagePath != null && !product.imagePath.isBlank()}"
+                 th:src="@{${product.imagePath}}"
+                 th:alt="${product.name}"
+                 width="75"
+                 height="75">
         </td>
 
         <td th:if="${session.loggedUser != null && session.loggedUser.role.name() == 'ADMIN'}">
